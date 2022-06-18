@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org/ ">
+<head>
+    <meta charset="UTF-8">
+    <title>New person</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/people}" th:object="${person}"> <!-- th:object="${person}" Тот самый новый пустой объект который положили в модель в контроллере который выбрасывает данную view-ку, в которую запишем данные и отправим на другой контроллер-->
+    <div>
+        <label for="FullName">Full Name: </label>
+        <input type="text" th:field="*{fullName}" id="FullName"/>
+        <br>
+        <label for="FullName">DateOfBirth Name: </label>
+        <input type="text" th:field="*{dateOfBirth}" id="DateOfBirth"/>
+        <br>
+
+        <input type="submit" value="Create!"/>
+    </div>
+</form>
+</body>
+</html>

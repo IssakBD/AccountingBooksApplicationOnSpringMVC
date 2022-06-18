@@ -46,5 +46,6 @@ public class SpringConfig implements WebMvcConfigurer { //данный инте�
         resolver.setTemplateEngine(templateEngine());
         registry.viewResolver(resolver);
     }
+
 }
 //Этот класс полностью эквивалентен ApplicationContextMVC.xml, ApplicationContextMVC.xml - можно удалить, а я его закоментирую.
