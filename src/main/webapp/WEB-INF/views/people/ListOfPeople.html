@@ -8,12 +8,19 @@
 <body>
 <div th:each="person : ${people}">
     <a th:href="@{/people/{id}(id=${person.getId()})}" th:text="${person.getFullName() + ', ' + person.getDateOfBirth()}">User</a>
-    <hr>
+    <br>
+    <br>
 </div>
 
 <br/>
+<hr/>
 
 <a th:href="@{/people/new}">Create new person</a>
-
+<br/>
+<hr/>
+<a href="/">Back to the main page</a>
+<br/>
+<hr/>
+<a href="/books">Go to the books page</a>
 </body>
 </html>

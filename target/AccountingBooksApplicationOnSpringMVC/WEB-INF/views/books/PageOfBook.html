@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org/ ">
+<head>
+  <meta charset="UTF-8">
+  <title>Book</title>
+</head>
+<body>
+<p th:text="${book.getName()}">Name</p>
+<p th:text="${book.getAuthorName()}">Author name</p>
+<p th:text="${book.getDateOfPublish()}">Date of publish</p>
+
+<a th:href="@{/books/{id}/edit(id=${book.getId()})}">Edit</a> <!--С помощью тега а будет посылаться только GET запрос -->
+
+<br>
+<br>
+
+<form th:action="@{/books/{id}(id=${book.getId()})}" th:method="DELETE"> <!-- с помощью form можно отправлять POST/PATCH/PUT/DELETE запросы -->
+  <input type="submit" value="DELETE"/>
+</form>
+
+<br>
+<br>
+
+<a href="/books">Back to the books page</a>
+</body>
+</html>

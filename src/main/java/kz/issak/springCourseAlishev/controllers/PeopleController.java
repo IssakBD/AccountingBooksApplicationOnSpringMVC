@@ -7,7 +7,10 @@ import kz.issak.springCourseAlishev.service.PeopleEditingService;
 import kz.issak.springCourseAlishev.service.PeopleListingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/people")
@@ -42,10 +45,15 @@ public class PeopleController {
     }
 
     @PostMapping()
-    public String createNewPerson(@ModelAttribute("person") Person person){ //здесь будут лежать данные заполненные в форме выше
+    public String createNewPerson(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult){ //В Person person здесь будут лежать данные заполненные в форме выше
+        if(bindingResult.hasErrors()) { //Если в bindingResult будут ошибки возникшие при валидации то мы просто перекинем пользователя на страничку обратно для создания человека, но в этой форме уже будут ошибки которые будут показываться с помощью thymeleaf
+            System.out.println("BindingResult has ERROR");
+            return "people/NewPerson";
+        }
+        System.out.println("binding result has not error");
         peopleCreatingService.createNewPerson(person);
-        System.out.println("CREATING SERVICe");
         return "redirect:/people"; //В redirect указывается URI Controller-a который выкинет свой шаблон
+        //@Valid ставится перед объектом которая должна валидироваться, и после нее обязательно нужно поставить BindingResult объект в который попадут сообщения при валидации который прописаны в самом объекте
     }
 
     @GetMapping("{id}")
@@ -61,7 +69,12 @@ public class PeopleController {
     }
 
     @PatchMapping("/{id}")
-    public String updatePerson(@ModelAttribute("person") Person person, @PathVariable("id") int id) {
+    public String editPerson(@ModelAttribute("person") @Valid Person person,
+                             BindingResult bindingResult,
+                             @PathVariable("id") int id) {
+        if(bindingResult.hasErrors()){
+            return "people/EditPerson";
+        }
         peopleEditingService.edit(id, person);
         return "redirect:/people";
     }

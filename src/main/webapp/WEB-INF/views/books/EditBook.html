@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org/ ">
+<head>
+    <meta charset="UTF-8">
+    <title>Editing book</title>
+</head>
+<body>
+<form th:method="PATCH" th:action="@{/books/{id}(id=${book.getId()})}" th:object="${book}"> <!-- th:object="${person}" Тот самый новый пустой объект который положили в модель в контроллере который выбрасывает данную view-ку, в которую запишем данные и отправим на другой контроллер-->
+    <div>
+        <label for="Name">Name: </label>
+        <input type="text" th:field="*{name}" id="Name"/>
+        <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
+        <br>
+        <label for="AuthorName">Author: </label>
+        <input type="text" th:field="*{authorName}" id="AuthorName"/>
+        <div style="color: red" th:if="${#fields.hasErrors('authorName')}" th:errors="*{authorName}">Name error</div>
+        <br>
+        <label for="DateOfPublish">Author: </label>
+        <input type="text" th:field="*{dateOfPublish}" id="DateOfPublish"/>
+        <div style="color: red" th:if="${#fields.hasErrors('dateOfPublish')}" th:errors="*{dateOfPublish}">Name error</div>
+        <br>
+
+        <input type="submit" value="Update!"/>
+    </div>
+</form>
+</body>
+</html>

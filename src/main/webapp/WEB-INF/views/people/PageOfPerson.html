@@ -3,13 +3,16 @@
       xsi:schemaLocation="http://www.thymeleaf.org/ ">
 <head>
     <meta charset="UTF-8">
-    <title>Человек</title>
+    <title>Person</title>
 </head>
 <body>
 <p th:text="${person.getFullName()}">Name</p>
-<p th:text="${person.getDateOfBirth()}">DateOfBirth</p>
+<p th:text="${person.getDateOfBirth()}">Date of birth</p>
 
-<a th:href="@{/people/{id}/edit(id=${person.getId()})}">Edit</a> //С помощью тега а будет посылаться только GET запрос
+<a th:href="@{/people/{id}/edit(id=${person.getId()})}">Edit</a> <!--С помощью тега а будет посылаться только GET запрос -->
+
+<br>
+<br>
 
 <form th:action="@{/people/{id}(id=${person.getId()})}" th:method="DELETE">
     <input type="submit" value="DELETE"/>
