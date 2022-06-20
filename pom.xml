@@ -79,6 +79,14 @@
       <version>6.1.6.Final</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+    <!-- Чтобы связать database с приложением нужно связать с jdbc api, данный драйвер установили для postgres базы -->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.4.0</version>
+    </dependency>
+
 
   </dependencies>
 
