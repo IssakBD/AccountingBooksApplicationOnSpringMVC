@@ -6,22 +6,43 @@
   <title>Book</title>
 </head>
 <body>
-<p th:text="${book.getName()}">Name</p>
-<p th:text="${book.getAuthorName()}">Author name</p>
-<p th:text="${book.getDateOfPublish()}">Date of publish</p>
+<p th:text="${book.getName() + ', ' + book.getAuthorName() + ', ' + book.getDateOfPublish()}">Information about book</p>
 
-<a th:href="@{/books/{id}/edit(id=${book.getId()})}">Edit</a> <!--С помощью тега а будет посылаться только GET запрос -->
+<div th:if="${(book.getPersonId() == null) or (book.getPersonId() == 0)}">
+  <p>This book is free. To whom should she be assigned?</p>
+  <form th:action="@{/books/{id}/assign(id=${book.getId()})}" th:method="POST">
+    <label for="person">Choose person:</label>
+    <select th:name="person" id="person" th:object="${person}" th:field="*{id}">
+      <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getFullName()}">
+      </option>
+    </select>
+    <input type="submit" value="Assign book"/>
+  </form>
+</div>
 
+<div th:if="${book.getPersonId() != 0}">
+  <p th:text="'This book is now with' + ' : ' + ${personWhichIsHaveThisBook.getFullName() + ', ' + personWhichIsHaveThisBook.getDateOfBirth()}">Info</p>
+    <form th:action="@{/books/{id}/free(id=${book.getId()})}" th:method="POST" th:object="${book}">
+      <input type="submit" value="FREE BOOK"/>
+    </form>
+</div>
+
+<hr>
+<br>
+<div>
+  <a th:href="@{/books/{id}/edit(id=${book.getId()})}">Edit</a> <!--С помощью тега а будет посылаться только GET запрос -->
+</div>
 <br>
 <br>
-
-<form th:action="@{/books/{id}(id=${book.getId()})}" th:method="DELETE"> <!-- с помощью form можно отправлять POST/PATCH/PUT/DELETE запросы -->
-  <input type="submit" value="DELETE"/>
-</form>
-
+<div>
+  <form th:action="@{/books/{id}(id=${book.getId()})}" th:method="DELETE"> <!-- с помощью form можно отправлять POST/PATCH/PUT/DELETE запросы -->
+    <input type="submit" value="DELETE"/>
+  </form>
+</div>
 <br>
 <br>
-
-<a href="/books">Back to the books page</a>
+<div>
+  <a href="/books">Back to the books page</a>
+</div>
 </body>
 </html>

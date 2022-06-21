@@ -17,4 +17,14 @@ public class BooksEditingServiceImpl implements BooksEditingService{
     public void edit(int id, Book book) {
         booksDAO.editBook(id, book);
     }
+
+    @Override
+    public void setPersonId(int id, int personId) {
+        booksDAO.setPersonId(id, personId);
+    }
+
+    @Override
+    public void freeBook(int bookId) {
+        booksDAO.freeBook(bookId);
+    }
 }

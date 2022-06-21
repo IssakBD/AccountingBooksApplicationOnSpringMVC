@@ -87,6 +87,13 @@
       <version>42.4.0</version>
     </dependency>
 
+    <!-- Данная зависимость предоставляет класс JDBC Template с помощью которой мы укоротим наши CRUD операции связанные с БД. JDBC Template вместо JDBC API. Без него у нас есть доступ на JDBC API но не на JDBC Template-->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
 
   </dependencies>
 

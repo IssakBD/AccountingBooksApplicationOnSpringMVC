@@ -1,10 +1,7 @@
 package kz.issak.springCourseAlishev.controllers;
 
 import kz.issak.springCourseAlishev.models.Person;
-import kz.issak.springCourseAlishev.service.PeopleCreatingService;
-import kz.issak.springCourseAlishev.service.PeopleDeletingService;
-import kz.issak.springCourseAlishev.service.PeopleEditingService;
-import kz.issak.springCourseAlishev.service.PeopleListingService;
+import kz.issak.springCourseAlishev.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,11 +19,14 @@ public class PeopleController {
 
     private final PeopleDeletingService peopleDeletingService;
 
-    public PeopleController(PeopleCreatingService peopleCreatingService, PeopleListingService peopleListingService, PeopleEditingService peopleEditingService, PeopleDeletingService peopleDeletingService) {
+    private final BooksListingService booksListingService;
+
+    public PeopleController(PeopleCreatingService peopleCreatingService, PeopleListingService peopleListingService, PeopleEditingService peopleEditingService, PeopleDeletingService peopleDeletingService, BooksListingService booksListingService) {
         this.peopleCreatingService = peopleCreatingService;
         this.peopleListingService = peopleListingService;
         this.peopleEditingService = peopleEditingService;
         this.peopleDeletingService = peopleDeletingService;
+        this.booksListingService = booksListingService;
     }
 
     @GetMapping()
@@ -59,6 +59,7 @@ public class PeopleController {
     @GetMapping("{id}")
     public String getPersonPage(@PathVariable("id") int id, Model model){ //Получим список людей из DAO и передадим на отображение в представление через модель.
         model.addAttribute("person", peopleListingService.getPerson(id));
+        model.addAttribute("books", booksListingService.getBookListByPersonId(id));
         return "people/PageOfPerson";
     }
 

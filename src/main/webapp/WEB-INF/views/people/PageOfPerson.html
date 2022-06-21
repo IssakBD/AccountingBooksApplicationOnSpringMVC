@@ -6,8 +6,18 @@
     <title>Person</title>
 </head>
 <body>
-<p th:text="${person.getFullName()}">Name</p>
-<p th:text="${person.getDateOfBirth()}">Date of birth</p>
+<p th:text="${person.getFullName() + ', ' + person.getDateOfBirth()}">Name</p>
+
+<p>Books:</p>
+<div th:if="${book != null}" th:each="book : ${books}">
+    <a th:href="@{/books/{id}(id=${book.getId()})}" th:text="${book.getName() + ', ' + book.getAuthorName() + ', ' + book.getDateOfPublish()}">Book</a>
+</div>
+<div th:if="${books == null}">
+    The man hasn't picked up any books yet.
+</div>
+
+<hr>
+<br>
 
 <a th:href="@{/people/{id}/edit(id=${person.getId()})}">Edit</a> <!--С помощью тега а будет посылаться только GET запрос -->
 

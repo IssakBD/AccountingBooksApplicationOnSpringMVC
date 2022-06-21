@@ -17,7 +17,7 @@
     <div style="color: red" th:if="${#fields.hasErrors('authorName')}" th:errors="*{authorName}">Author's name error</div>
     <br>
     <label for="DateOfPublish">Date of Publish: </label>
-    <input type="text" th:field="*{dateOfPublish}" id="DateOfPublish"/>
+    <input type="number" th:field="*{dateOfPublish}" id="DateOfPublish"/>
     <div style="color: red" th:if="${#fields.hasErrors('dateOfPublish')}" th:errors="*{dateOfPublish}">Date of publish error</div>
     <br>
 

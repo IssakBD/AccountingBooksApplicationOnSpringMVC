@@ -1,15 +1,14 @@
 package kz.issak.springCourseAlishev.controllers;
 
 import kz.issak.springCourseAlishev.models.Book;
-import kz.issak.springCourseAlishev.service.BooksCreatingService;
-import kz.issak.springCourseAlishev.service.BooksDeletingService;
-import kz.issak.springCourseAlishev.service.BooksEditingService;
-import kz.issak.springCourseAlishev.service.BooksListingService;
+import kz.issak.springCourseAlishev.models.Person;
+import kz.issak.springCourseAlishev.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -21,15 +20,18 @@ public class BooksController {
     private final BooksEditingService booksEditingService;
     private final BooksDeletingService booksDeletingService;
 
-    public BooksController(BooksCreatingService booksCreatingService, BooksListingService booksListingService, BooksEditingService booksEditingService, BooksDeletingService booksDeletingService) {
+    private final PeopleListingService peopleListingService;
+
+    public BooksController(BooksCreatingService booksCreatingService, BooksListingService booksListingService, BooksEditingService booksEditingService, BooksDeletingService booksDeletingService, PeopleListingService peopleListingService) {
         this.booksCreatingService = booksCreatingService;
         this.booksListingService = booksListingService;
         this.booksEditingService = booksEditingService;
         this.booksDeletingService = booksDeletingService;
+        this.peopleListingService = peopleListingService;
     }
 
-    @GetMapping()
-    public String getBooksList(Model model){ //Получим список людей из DAO и передадим на отображение в представление через модель.
+    @GetMapping
+    public String getBooksList(Model model){ //Получим список книг из DAO и передадим на отображение в представление через модель.
         model.addAttribute("books", booksListingService.getBooksList());
         return "books/ListOfBooks";
     }
@@ -43,7 +45,7 @@ public class BooksController {
         return "books/NewBook";
     }
 
-    @PostMapping()
+    @PostMapping
     public String createNewBook(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult){ //здесь будут лежать данные заполненные в форме выше
         if(bindingResult.hasErrors()) { //Если в bindingResult будут ошибки возникшие при валидации то мы просто перекинем пользователя на страничку обратно для создания человека, но в этой форме уже будут ошибки которые будут показываться с помощью thymeleaf
             return "books/NewBook";
@@ -53,8 +55,10 @@ public class BooksController {
     }
 
     @GetMapping("{id}")
-    public String getBookPage(@PathVariable("id") int id, Model model){ //Получим список людей из DAO и передадим на отображение в представление через модель.
+    public String getBookPage(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person){ //Получим список людей из DAO и передадим на отображение в представление через модель.
         model.addAttribute("book", booksListingService.getBook(id));
+        model.addAttribute("people", peopleListingService.getPeopleList());
+        model.addAttribute("personWhichIsHaveThisBook", peopleListingService.getPerson(booksListingService.getPersonIdByBookId(id)));
         return "books/PageOfBook";
     }
 
@@ -65,13 +69,25 @@ public class BooksController {
     }
 
     @PatchMapping("/{id}")
-    public String EditBook(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult, @PathVariable("id") int id) {
+    public String editBook(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult, @PathVariable("id") int id) {
         if(bindingResult.hasErrors()) { //Если в bindingResult будут ошибки возникшие при валидации то мы просто перекинем пользователя на страничку обратно для создания человека, но в этой форме уже будут ошибки которые будут показываться с помощью thymeleaf
-            System.out.println("BindingResult has ERROR");
             return "books/EditBook";
         }
         booksEditingService.edit(id, book);
         return "redirect:/books";
+    }
+
+    @PostMapping("/{id}/free")
+    public String freeBook(@PathVariable("id") int id){
+        System.out.println(id);
+        booksEditingService.freeBook(id);
+        return "redirect:/books/{id}";
+    }
+
+    @PostMapping("/{id}/assign")
+    public String assingBook(@PathVariable("id") int id, @RequestParam("id") int personId){
+        booksEditingService.setPersonId(id, personId);
+        return "redirect:/books/{id}";
     }
 
     @DeleteMapping("/{id}")
