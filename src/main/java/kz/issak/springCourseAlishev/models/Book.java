@@ -1,19 +1,16 @@
 package kz.issak.springCourseAlishev.models;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class Book {
     private int id;
 
     private int personId;
     @NotEmpty(message = "Book's name is should not be empty")
-    @Size(min = 2, max = 30, message = "Book's name size should be between 2 and 30 characters")
+    @Size(min = 2, max = 50, message = "Book's name size should be between 2 and 30 characters")
     private String name;
     @NotEmpty(message = "Author's name is should not be empty")
-    @Size(min = 2, max = 30, message = "Author's name size should be between 2 and 30 characters")
+    @Size(min = 2, max = 50, message = "Author's name size should be between 2 and 30 characters")
     private String authorName;
 
     @Min(value = 1000, message = "Min value is 1000")

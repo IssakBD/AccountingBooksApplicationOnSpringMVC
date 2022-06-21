@@ -1,15 +1,16 @@
 package kz.issak.springCourseAlishev.models;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class Person {
     int id;
     @NotEmpty(message = "Full Name is should not be empty")
-    @Size(min = 2, max = 30, message = "Full name should be be between 2 and 30 characters")
+    @Size(min = 2, max = 40, message = "Full name should be be between 2 and 30 characters")
     private String fullName;
     @NotEmpty(message = "Date of birth is should not be empty")
-    @Size(min = 10, max = 10, message = "Date of birth is not correct")
+    @Pattern(regexp = "\\d{2}.\\d{2}.\\d{4}", message = "date of Brithday should be like dd.mm.yyyy")
     private String dateOfBirth;
 
     public Person() {

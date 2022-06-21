@@ -2,6 +2,7 @@ package kz.issak.springCourseAlishev.controllers;
 
 import kz.issak.springCourseAlishev.models.Person;
 import kz.issak.springCourseAlishev.service.*;
+import kz.issak.springCourseAlishev.util.PersonValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,12 +22,15 @@ public class PeopleController {
 
     private final BooksListingService booksListingService;
 
-    public PeopleController(PeopleCreatingService peopleCreatingService, PeopleListingService peopleListingService, PeopleEditingService peopleEditingService, PeopleDeletingService peopleDeletingService, BooksListingService booksListingService) {
+    private final PersonValidator personValidator;
+
+    public PeopleController(PeopleCreatingService peopleCreatingService, PeopleListingService peopleListingService, PeopleEditingService peopleEditingService, PeopleDeletingService peopleDeletingService, BooksListingService booksListingService, PersonValidator personValidator) {
         this.peopleCreatingService = peopleCreatingService;
         this.peopleListingService = peopleListingService;
         this.peopleEditingService = peopleEditingService;
         this.peopleDeletingService = peopleDeletingService;
         this.booksListingService = booksListingService;
+        this.personValidator = personValidator;
     }
 
     @GetMapping()
@@ -46,6 +50,9 @@ public class PeopleController {
 
     @PostMapping()
     public String createNewPerson(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult){ //В Person person здесь будут лежать данные заполненные в форме выше
+
+        personValidator.validate(person, bindingResult); //Валидация на БД тоже будет хранить свои сообщения в bindingResult
+
         if(bindingResult.hasErrors()) { //Если в bindingResult будут ошибки возникшие при валидации то мы просто перекинем пользователя на страничку обратно для создания человека, но в этой форме уже будут ошибки которые будут показываться с помощью thymeleaf
             System.out.println("BindingResult has ERROR");
             return "people/NewPerson";
@@ -73,6 +80,7 @@ public class PeopleController {
     public String editPerson(@ModelAttribute("person") @Valid Person person,
                              BindingResult bindingResult,
                              @PathVariable("id") int id) {
+        personValidator.validate(person, bindingResult);
         if(bindingResult.hasErrors()){
             return "people/EditPerson";
         }

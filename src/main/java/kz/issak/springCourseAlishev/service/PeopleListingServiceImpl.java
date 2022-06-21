@@ -5,6 +5,7 @@ import kz.issak.springCourseAlishev.models.Person;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PeopleListingServiceImpl implements PeopleListingService{
@@ -23,6 +24,11 @@ public class PeopleListingServiceImpl implements PeopleListingService{
     @Override
     public Person getPerson(int id) {
         return peopleDAO.getPerson(id);
+    }
+
+    @Override
+    public Optional<Person> getPersonByFullName(String fullName) {
+        return peopleDAO.getPersonByFullName(fullName);
     }
 
 }

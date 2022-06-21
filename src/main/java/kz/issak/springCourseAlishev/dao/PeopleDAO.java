@@ -2,7 +2,9 @@ package kz.issak.springCourseAlishev.dao;
 
 import kz.issak.springCourseAlishev.exceptions.NotFoundException;
 import kz.issak.springCourseAlishev.models.Person;
+import kz.issak.springCourseAlishev.rowMapper.BookMapper;
 import kz.issak.springCourseAlishev.rowMapper.PersonMapper;
+import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @Repository
 public class PeopleDAO {
 
@@ -184,6 +188,10 @@ public class PeopleDAO {
 
         // С помощью JDBC Template:
         jdbcTemplate.update("DELETE FROM Person WHERE id = ?", id);
+    }
+
+    public Optional<Person> getPersonByFullName(String fullName){
+        return jdbcTemplate.query("SELECT * FROM Person WHERE fullName = ?", new BeanPropertyRowMapper<>(Person.class), new Object[]{fullName}).stream().findAny();
     }
 
 
